@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Checker!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Poppins,sans-serif;
+}
+body {
+    background: linear-gradient(to right, blue, lightblue);
+}
+
+.container {
+    background: linear-gradient(to right, yellow, #ffcc00); 
+    padding: 50px;
+    margin: 100px 200px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+.header{
+    color: black;
+}
+input[type="text"]{
+    margin-top:10px ;
+    height: 3.5rem;
+    width: 250px;
+    border-radius: 10px;
+    border: 3px solid#e7e7e9;
+    outline: none;
+    padding: 15px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+input:focus{
+    background-color: white;
+    color: black;
+    border-color: yellow;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,25%);
+}
+input[type="button"]{
+    background-color: black;
+    height: 3.1rem;
+    width: 150px;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.result{
+    color: black;
+    text-align: center;
+}
+    </style>
+    <div class="container">
+        <div>
+            <img src="C:\Users\shanm\OneDrive\Desktop\snake\w2.webp" style="width: 100px; height: 100px;">
+
+            <h1 class="header">Weather Checker!</h1>
+            
+            <input type="text" placeholder="Search City..." id="city">
+            <br>
+            <input type="button" value="Search" onclick="getWeather()"> 
+        </div>
+        <br>
+        <div class="result">
+            <h2 id="cityname">--------------</h2>
+            <div>
+                <h2 id="weather">--------------</h2>
+                <div>
+                    <h3>Temp:<span id="temp"></span><span>°</span></h3>
+                    <h3>Min Temp:<span id="min-temp"></span><span>°</span></h3>
+                    <h3>Max Temp:<span id="max-temp"></span><span>°</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "4d67fa211c3443f187f162820250203"; 
+        async function getWeather() {
+            const city = document.getElementById('city').value;
+            if (city === '') {
+                alert('Please enter a city');
+                return;
+            }
+
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.error) {
+                    alert('City not found!');
+                } else {
+                    document.getElementById('cityname').textContent = data.location.name;
+                    document.getElementById('weather').textContent = data.current.condition.text;
+                    document.getElementById('temp').textContent = data.current.temp_c;
+                    document.getElementById('min-temp').textContent = data.current.feelslike_c;
+                    document.getElementById('max-temp').textContent = data.current.temp_c;
+                    
+                }
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Failed to fetch weather data');
+            }
+        }
+    </script>
+</body>
+</html>
